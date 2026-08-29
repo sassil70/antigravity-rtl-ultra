@@ -1,0 +1,66 @@
+﻿{
+  "name": "antigravity-rtl-ultra",
+  "displayName": "Antigravity RTL Ultra",
+  "description": "Universal Dual-Pane Right-to-Left (RTL) engine for Antigravity IDE and AI-augmented IDEs. Supports both AI Chat and Artifacts / Reports Viewer.",
+  "version": "1.0.0",
+  "publisher": "sassil",
+  "categories": [
+    "Formatters",
+    "Themes",
+    "Other"
+  ],
+  "keywords": [
+    "rtl",
+    "arabic",
+    "hebrew",
+    "persian",
+    "farsi",
+    "urdu",
+    "antigravity",
+    "cursor",
+    "chat",
+    "artifacts"
+  ],
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "main": "./extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "antigravityRtlUltra.enable",
+        "title": "Antigravity RTL Ultra: Enable RTL Engine"
+      },
+      {
+        "command": "antigravityRtlUltra.disable",
+        "title": "Antigravity RTL Ultra: Disable RTL Engine (Restore Original)"
+      },
+      {
+        "command": "antigravityRtlUltra.toggle",
+        "title": "Antigravity RTL Ultra: Toggle RTL Engine"
+      },
+      {
+        "command": "antigravityRtlUltra.diagnostics",
+        "title": "Antigravity RTL Ultra: Show Diagnostics"
+      }
+    ],
+    "configuration": {
+      "title": "Antigravity RTL Ultra",
+      "properties": {
+        "antigravityRtlUltra.autoEnable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically apply RTL Ultra patch on startup and after IDE updates."
+        }
+      }
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sassil70/antigravity-rtl-ultra"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,108 @@
+﻿/* ==========================================================================
+   Antigravity RTL Ultra — Artifacts, Documents & Report Viewer Panel
+   ========================================================================== */
+
+/* ── Artifact & Markdown Container Direction ──────────────────────────── */
+.rendered-markdown,
+.markdown-body,
+.artifact-content,
+[class*="artifact"],
+[class*="markdown-preview"],
+[class*="report-"] {
+    unicode-bidi: plaintext !important;
+    text-align: start !important;
+}
+
+/* ── Headings & Titles in Artifacts ───────────────────────────────────── */
+.rendered-markdown h1,
+.rendered-markdown h2,
+.rendered-markdown h3,
+.rendered-markdown h4,
+.rendered-markdown h5,
+.rendered-markdown h6,
+.artifact-content h1,
+.artifact-content h2,
+.artifact-content h3,
+.artifact-content h4,
+.artifact-content h5,
+.artifact-content h6,
+[class*="artifact"] h1,
+[class*="artifact"] h2,
+[class*="artifact"] h3,
+[class*="artifact"] h4,
+[class*="artifact"] h5,
+[class*="artifact"] h6 {
+    unicode-bidi: plaintext !important;
+    text-align: start !important;
+}
+
+/* ── Markdown Alert Callouts ([!NOTE], [!IMPORTANT], [!TIP], [!WARNING], [!CAUTION]) ─ */
+.markdown-alert,
+.rendered-markdown .markdown-alert,
+[class*="alert-"] {
+    border-left: none !important;
+    border-right: none !important;
+    border-inline-start: 4px solid currentColor !important;
+    padding-inline-start: 1em !important;
+    padding-inline-end: 0.75em !important;
+    margin-inline-start: 0 !important;
+    margin-inline-end: 0 !important;
+    unicode-bidi: plaintext !important;
+    text-align: start !important;
+}
+
+/* ── Artifacts Lists & Indentation ────────────────────────────────────── */
+.rendered-markdown ul,
+.rendered-markdown ol,
+.artifact-content ul,
+.artifact-content ol,
+[class*="artifact"] ul,
+[class*="artifact"] ol {
+    padding-inline-start: 1.75em !important;
+    padding-inline-end: 0.5em !important;
+    margin-inline-start: 0 !important;
+    margin-inline-end: 0 !important;
+}
+
+.rendered-markdown li,
+.artifact-content li,
+[class*="artifact"] li {
+    unicode-bidi: plaintext !important;
+    text-align: start !important;
+    margin-bottom: 0.35em !important;
+}
+
+/* ── Artifacts Blockquotes & Notes ────────────────────────────────────── */
+.rendered-markdown blockquote,
+.artifact-content blockquote,
+[class*="artifact"] blockquote {
+    border-left: none !important;
+    border-right: none !important;
+    border-inline-start: 4px solid var(--vscode-textBlockQuote-border, rgba(255, 255, 255, 0.25)) !important;
+    padding-inline-start: 1em !important;
+    padding-inline-end: 0.5em !important;
+    margin-inline-start: 0 !important;
+    margin-inline-end: 0 !important;
+    unicode-bidi: plaintext !important;
+    text-align: start !important;
+}
+
+/* ── Artifacts Tables ─────────────────────────────────────────────────── */
+.rendered-markdown table,
+.artifact-content table,
+[class*="artifact"] table {
+    direction: inherit !important;
+    border-collapse: collapse !important;
+    width: 100% !important;
+}
+
+.rendered-markdown th,
+.rendered-markdown td,
+.artifact-content th,
+.artifact-content td,
+[class*="artifact"] th,
+[class*="artifact"] td {
+    text-align: start !important;
+    unicode-bidi: plaintext !important;
+    padding: 6px 12px !important;
+}

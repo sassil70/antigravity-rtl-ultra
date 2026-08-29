@@ -1,0 +1,89 @@
+﻿/* ==========================================================================
+   Antigravity RTL Ultra — AI Chat & Cascade Conversation Panel
+   ========================================================================== */
+
+/* ── Chat Container List Alignment (Preserving Native Counters & Bullets) ─ */
+.monaco-workbench .chat-widget ul,
+.monaco-workbench .chat-widget ol,
+.monaco-workbench .interactive-session ul,
+.monaco-workbench .interactive-session ol,
+.monaco-workbench .chat-container ul,
+.monaco-workbench .chat-container ol,
+.monaco-workbench .interactive-container ul,
+.monaco-workbench .interactive-container ol,
+.monaco-workbench .part.auxiliarybar ul,
+.monaco-workbench .part.auxiliarybar ol,
+.monaco-workbench .part.sidebar ul,
+.monaco-workbench .part.sidebar ol,
+.monaco-workbench .part.panel ul,
+.monaco-workbench .part.panel ol,
+[class*="cascade"] ul,
+[class*="cascade"] ol,
+[class*="chat-"] ul,
+[class*="chat-"] ol {
+    padding-inline-start: 1.75em !important;
+    padding-inline-end: 0.5em !important;
+    margin-inline-start: 0 !important;
+    margin-inline-end: 0 !important;
+}
+
+/* ── List Items Direction & Spacing ───────────────────────────────────── */
+.monaco-workbench .chat-widget li,
+.monaco-workbench .interactive-session li,
+.monaco-workbench .chat-container li,
+.monaco-workbench .interactive-container li,
+.monaco-workbench .part.auxiliarybar li,
+.monaco-workbench .part.sidebar li,
+.monaco-workbench .part.panel li,
+[class*="cascade"] li,
+[class*="chat-"] li {
+    unicode-bidi: plaintext !important;
+    text-align: start !important;
+    margin-bottom: 0.35em !important;
+}
+
+/* ── Blockquotes in Chat ──────────────────────────────────────────────── */
+.monaco-workbench .chat-widget blockquote,
+.monaco-workbench .interactive-session blockquote,
+.monaco-workbench .chat-container blockquote,
+.monaco-workbench .interactive-container blockquote,
+.monaco-workbench .part.auxiliarybar blockquote,
+.monaco-workbench .part.sidebar blockquote,
+.monaco-workbench .part.panel blockquote,
+[class*="cascade"] blockquote,
+[class*="chat-"] blockquote {
+    border-left: none !important;
+    border-right: none !important;
+    border-inline-start: 4px solid var(--vscode-textBlockQuote-border, rgba(255, 255, 255, 0.25)) !important;
+    padding-inline-start: 1em !important;
+    padding-inline-end: 0.5em !important;
+    margin-inline-start: 0 !important;
+    margin-inline-end: 0 !important;
+    unicode-bidi: plaintext !important;
+    text-align: start !important;
+}
+
+/* ── Tables in Chat ───────────────────────────────────────────────────── */
+.monaco-workbench .chat-widget table,
+.monaco-workbench .interactive-session table,
+.monaco-workbench .chat-container table,
+.monaco-workbench .interactive-container table,
+[class*="cascade"] table,
+[class*="chat-"] table {
+    direction: inherit !important;
+    border-collapse: collapse !important;
+}
+
+.monaco-workbench .chat-widget th,
+.monaco-workbench .chat-widget td,
+.monaco-workbench .interactive-session th,
+.monaco-workbench .interactive-session td,
+.monaco-workbench .chat-container th,
+.monaco-workbench .chat-container td,
+[class*="cascade"] th,
+[class*="cascade"] td,
+[class*="chat-"] th,
+[class*="chat-"] td {
+    text-align: start !important;
+    unicode-bidi: plaintext !important;
+}
