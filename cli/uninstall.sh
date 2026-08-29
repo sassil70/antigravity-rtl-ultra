@@ -1,32 +1,9 @@
-#!/usr/bin/env bash
+﻿#!/usr/bin/env bash
 set -e
 
 echo "=========================================================="
-echo "   Antigravity RTL Ultra -- 1-Click Installer (Unix)      "
+echo "   Antigravity RTL Ultra -- Safe Rollback (Unix)          "
 echo "=========================================================="
-
-BUNDLE_URL="https://raw.githubusercontent.com/sassil70/antigravity-rtl-ultra/main/src/styles/bundle.css"
-PATCH_CSS=""
-
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd || echo "")"
-if [ -n "$SCRIPT_DIR" ] && [ -f "${SCRIPT_DIR}/../src/styles/bundle.css" ]; then
-    PATCH_CSS=$(cat "${SCRIPT_DIR}/../src/styles/bundle.css")
-else
-    echo "[*] Fetching bundle.css from GitHub..."
-    if command -v curl >/dev/null 2>&1; then
-        PATCH_CSS=$(curl -fsSL "$BUNDLE_URL")
-    elif command -v wget >/dev/null 2>&1; then
-        PATCH_CSS=$(wget -qO- "$BUNDLE_URL")
-    else
-        echo "Error: Neither curl nor wget found."
-        exit 1
-    fi
-fi
-
-if [ -z "$PATCH_CSS" ]; then
-    echo "Error: Failed to load bundle.css"
-    exit 1
-fi
 
 TARGETS=()
 
@@ -57,31 +34,26 @@ fi
 FOUND=0
 
 for TARGET in "${TARGETS[@]}"; do
-    if [ -f "$TARGET" ]; then
+    BACKUP="${TARGET}.rtlbak"
+    if [ -f "$BACKUP" ]; then
         FOUND=1
-        echo "Target: $TARGET"
-        BACKUP="${TARGET}.rtlbak"
-        if [ ! -f "$BACKUP" ]; then
-            cp "$TARGET" "$BACKUP"
-            echo "  [+] Created backup at: $BACKUP"
-        fi
-
-        # Remove existing patch if present
+        echo "Restoring from backup: $BACKUP"
+        cp "$BACKUP" "$TARGET"
+        rm -f "$BACKUP"
+        echo "  [OK] Restored original file."
+    elif [ -f "$TARGET" ]; then
+        FOUND=1
+        echo "Surgically stripping RTL patch from: $TARGET"
         sed -i.tmp '/\/\* RTL-PATCH-START \*\//,/\/\* RTL-PATCH-END \*\//d' "$TARGET" 2>/dev/null || true
         rm -f "${TARGET}.tmp"
-
-        # Append new patch
-        echo "" >> "$TARGET"
-        echo "$PATCH_CSS" >> "$TARGET"
-        echo "  [OK] Antigravity RTL Ultra applied successfully!"
+        echo "  [OK] Stripped patch."
     fi
 done
 
 if [ $FOUND -eq 1 ]; then
     echo "=========================================================="
-    echo " Installation Complete! Please restart Antigravity IDE.   "
+    echo " Rollback Complete! Please restart your IDE.             "
     echo "=========================================================="
 else
-    echo "No supported IDE installations found in standard paths."
+    echo "No target installations found."
 fi
-

@@ -18,16 +18,27 @@ Write-Host "==========================================================" -Foregro
 $CSS_MARKER_START = "/* RTL-PATCH-START */"
 $CSS_MARKER_END   = "/* RTL-PATCH-END */"
 
-# 1. Read the compiled bundle CSS
-$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$bundlePath = Join-Path (Split-Path -Parent $scriptDir) "src\styles\bundle.css"
+# 1. Read the compiled bundle CSS (Local or Remote)
+$patchCss = ""
+$bundleUrl = "https://raw.githubusercontent.com/sassil70/antigravity-rtl-ultra/main/src/styles/bundle.css"
 
-if (-not (Test-Path $bundlePath)) {
-    Write-Error "Could not find bundle.css at $bundlePath"
-    exit 1
+if ($MyInvocation.MyCommand.Path) {
+    $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+    $bundlePath = Join-Path (Split-Path -Parent $scriptDir) "src\styles\bundle.css"
+    if (Test-Path $bundlePath) {
+        $patchCss = [System.IO.File]::ReadAllText($bundlePath, [System.Text.Encoding]::UTF8)
+    }
 }
 
-$patchCss = [System.IO.File]::ReadAllText($bundlePath, [System.Text.Encoding]::UTF8)
+if ([string]::IsNullOrWhiteSpace($patchCss)) {
+    try {
+        Write-Host "[*] Fetching bundle.css from GitHub..." -ForegroundColor Cyan
+        $patchCss = (Invoke-RestMethod -Uri $bundleUrl -UseBasicParsing)
+    } catch {
+        Write-Error "Could not load bundle.css locally or from $bundleUrl: $_"
+        exit 1
+    }
+}
 
 # 2. Find target IDE CSS files
 $localAppData = $env:LOCALAPPDATA
