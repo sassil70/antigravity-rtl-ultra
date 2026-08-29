@@ -1,6 +1,6 @@
-﻿<#
+<#
 .SYNOPSIS
-    Antigravity RTL Ultra — 1-Click Universal Installer for Windows
+    Antigravity RTL Ultra -- 1-Click Universal Installer for Windows
 .DESCRIPTION
     Injects clean, dual-pane RTL BiDi engine into Antigravity IDE and VS Code forks.
 #>
@@ -12,7 +12,7 @@ param (
 
 $ErrorActionPreference = "Stop"
 Write-Host "==========================================================" -ForegroundColor Cyan
-Write-Host "   Antigravity RTL Ultra — 1-Click Installer (Windows)    " -ForegroundColor Green
+Write-Host "   Antigravity RTL Ultra -- 1-Click Installer (Windows)   " -ForegroundColor Green
 Write-Host "==========================================================" -ForegroundColor Cyan
 
 $CSS_MARKER_START = "/* RTL-PATCH-START */"
@@ -27,7 +27,7 @@ if (-not (Test-Path $bundlePath)) {
     exit 1
 }
 
-$patchCss = Get-Content $bundlePath -Raw
+$patchCss = [System.IO.File]::ReadAllText($bundlePath, [System.Text.Encoding]::UTF8)
 
 # 2. Find target IDE CSS files
 $localAppData = $env:LOCALAPPDATA
@@ -36,6 +36,7 @@ $candidates = @(
     "$localAppData\Programs\Antigravity\resources\app\out\vs\workbench\workbench.desktop.main.css",
     "$localAppData\Programs\Cursor\resources\app\out\vs\workbench\workbench.desktop.main.css",
     "$localAppData\Programs\Windsurf\resources\app\out\vs\workbench\workbench.desktop.main.css",
+    "$localAppData\Programs\Qoder\resources\app\out\vs\workbench\workbench.desktop.main.css",
     "$localAppData\Programs\Microsoft VS Code\resources\app\out\vs\workbench\workbench.desktop.main.css"
 )
 
@@ -51,19 +52,27 @@ if ($foundTargets.Count -eq 0) {
     exit 0
 }
 
-function Update-Checksum($cssPath, $newContent) {
+function Update-Checksum {
+    param (
+        [string]$cssPath,
+        [string]$newContent
+    )
     $appDir = Split-Path (Split-Path (Split-Path (Split-Path $cssPath)))
     $productJsonPath = Join-Path $appDir "product.json"
     if (Test-Path $productJsonPath) {
         try {
-            $json = Get-Content $productJsonPath -Raw | ConvertFrom-Json
-            if ($json.checksums -and $json.checksums.'vs/workbench/workbench.desktop.main.css') {
+            $rawJson = [System.IO.File]::ReadAllText($productJsonPath, [System.Text.Encoding]::UTF8)
+            $json = ConvertFrom-Json $rawJson
+            if ($null -ne $json.checksums) {
                 $sha256 = [System.Security.Cryptography.SHA256]::Create()
                 $bytes = [System.Text.Encoding]::UTF8.GetBytes($newContent)
                 $hash = [Convert]::ToBase64String($sha256.ComputeHash($bytes)).Replace("=", "")
-                $json.checksums.'vs/workbench/workbench.desktop.main.css' = $hash
-                $json | ConvertTo-Json -Depth 10 | Set-Content $productJsonPath -Encoding utf8
-                Write-Host "  [+] product.json checksum updated successfully." -ForegroundColor Gray
+                if ($json.checksums.PSObject.Properties["vs/workbench/workbench.desktop.main.css"]) {
+                    $json.checksums."vs/workbench/workbench.desktop.main.css" = $hash
+                    $updatedJson = $json | ConvertTo-Json -Depth 10
+                    [System.IO.File]::WriteAllText($productJsonPath, $updatedJson, [System.Text.Encoding]::UTF8)
+                    Write-Host "  [+] product.json checksum updated successfully." -ForegroundColor Gray
+                }
             }
         } catch {
             Write-Warning "Failed to update checksum in product.json: $_"
@@ -81,7 +90,7 @@ foreach ($target in $foundTargets) {
         Write-Host "  [+] Created backup at: $backup" -ForegroundColor Gray
     }
 
-    $content = Get-Content $target -Raw
+    $content = [System.IO.File]::ReadAllText($target, [System.Text.Encoding]::UTF8)
 
     # Strip existing patch if present
     if ($content.Contains($CSS_MARKER_START) -and $content.Contains($CSS_MARKER_END)) {
@@ -92,13 +101,15 @@ foreach ($target in $foundTargets) {
     }
 
     # Inject new patch
-    $newContent = $content + "`n`n" + $patchCss
+    $newContent = $content.TrimEnd() + "`r`n`r`n" + $patchCss + "`r`n"
     [System.IO.File]::WriteAllText($target, $newContent, [System.Text.Encoding]::UTF8)
-    Write-Host "  [✓] Antigravity RTL Ultra applied successfully!" -ForegroundColor Green
+    Write-Host "  [OK] Antigravity RTL Ultra applied successfully!" -ForegroundColor Green
 
-    Update-Checksum $target $newContent
+    Update-Checksum -cssPath $target -newContent $newContent
 }
 
 Write-Host "`n==========================================================" -ForegroundColor Green
 Write-Host " Installation Complete! Please restart Antigravity IDE. " -ForegroundColor Green
 Write-Host "==========================================================" -ForegroundColor Green
+
+
