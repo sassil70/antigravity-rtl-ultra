@@ -1,126 +1,164 @@
-<#
+﻿<#
 .SYNOPSIS
-    Antigravity RTL Ultra -- 1-Click Universal Installer for Windows
+    Antigravity RTL Ultra — Universal Dual-Engine Installer (Windows)
 .DESCRIPTION
-    Injects clean, dual-pane RTL BiDi engine into Antigravity IDE and VS Code forks.
+    Injects clean, dual-pane RTL BiDi engine into:
+    1. Antigravity Desktop 2.x (Electron app.asar architecture)
+    2. Antigravity IDE / VS Code / Cursor / Windsurf (workbench.desktop.main.css)
 #>
 
 [CmdletBinding()]
 param (
-    [switch]$Force
+    [switch]$RestartDesktop
 )
 
 $ErrorActionPreference = "Stop"
 Write-Host "==========================================================" -ForegroundColor Cyan
-Write-Host "   Antigravity RTL Ultra -- 1-Click Installer (Windows)   " -ForegroundColor Green
+Write-Host "   Antigravity RTL Ultra — Universal Installer            " -ForegroundColor Green
 Write-Host "==========================================================" -ForegroundColor Cyan
 
+$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+$bundlePath = Join-Path (Split-Path -Parent $scriptDir) "src\styles\bundle.css"
+
+if (-not (Test-Path $bundlePath)) {
+    Write-Error "Could not find bundle.css at $bundlePath"
+    exit 1
+}
+
+$bundleCss = Get-Content $bundlePath -Raw
+$localAppData = $env:LOCALAPPDATA
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ENGINE 1: Antigravity Desktop 2.x (Electron / app.asar)
+# ─────────────────────────────────────────────────────────────────────────────
+$antigravityDesktopDir = "$localAppData\Programs\Antigravity"
+$desktopAsar = "$antigravityDesktopDir\resources\app.asar"
+
+if (Test-Path $desktopAsar) {
+    Write-Host "`n[+] Detected Antigravity Desktop 2.x (Electron Architecture)" -ForegroundColor Yellow
+    Write-Host "    Path: $desktopAsar" -ForegroundColor Gray
+
+    $tempExtract = "$env:TEMP\antigravity_rtl_asar_build"
+    if (Test-Path $tempExtract) { Remove-Item -Recurse -Force $tempExtract }
+    New-Item -ItemType Directory -Path $tempExtract -Force | Out-Null
+
+    Write-Host "  [1/4] Extracting app.asar package..." -ForegroundColor Gray
+    npx asar extract $desktopAsar $tempExtract
+
+    $preloadPath = "$tempExtract\dist\preload.js"
+    if (Test-Path $preloadPath) {
+        Write-Host "  [2/4] Injecting Dual-Pane RTL Engine into preload.js..." -ForegroundColor Gray
+        $escapedCss = $bundleCss.Replace('\', '\\').Replace('`', '\`').Replace('$', '\$')
+        
+        $injection = @"
+
+// [ANTIGRAVITY-RTL-ULTRA-START]
+(() => {
+    const RTL_STYLE_ID = 'antigravity-rtl-ultra-style';
+    const RTL_CSS = `$escapedCss`;
+    function injectRTL() {
+        try {
+            if (!document || !document.documentElement) return;
+            if (document.getElementById(RTL_STYLE_ID)) return;
+            const style = document.createElement('style');
+            style.id = RTL_STYLE_ID;
+            style.textContent = RTL_CSS;
+            (document.head || document.documentElement).appendChild(style);
+        } catch (e) {}
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', injectRTL);
+    } else {
+        injectRTL();
+    }
+    setInterval(injectRTL, 1500);
+})();
+// [ANTIGRAVITY-RTL-ULTRA-END]
+"@
+        Add-Content -Path $preloadPath -Value $injection
+    }
+
+    Write-Host "  [3/4] Repacking app.asar with RTL Ultra..." -ForegroundColor Gray
+    $patchedAsar = "$antigravityDesktopDir\resources\app.asar.patched"
+    npx asar pack $tempExtract $patchedAsar --unpack "**/node_modules/chrome-devtools-mcp/**"
+    Remove-Item -Recurse -Force $tempExtract
+
+    Write-Host "  [4/4] Finalizing installation..." -ForegroundColor Gray
+    $backupAsar = "$desktopAsar.rtlbak"
+
+    $isRunning = Get-Process -Name "Antigravity" -ErrorAction SilentlyContinue
+    if ($isRunning) {
+        Write-Host "  [!] Antigravity Desktop is currently running." -ForegroundColor Yellow
+        Write-Host "      Patched bundle is ready at: $patchedAsar" -ForegroundColor Cyan
+        if ($RestartDesktop) {
+            Write-Host "      Restarting Antigravity Desktop to apply..." -ForegroundColor Cyan
+            Stop-Process -Name "Antigravity" -Force
+            Start-Sleep -Seconds 2
+            if (-not (Test-Path $backupAsar)) { Copy-Item $desktopAsar $backupAsar -Force }
+            Move-Item $patchedAsar $desktopAsar -Force
+            Start-Process "$antigravityDesktopDir\Antigravity.exe"
+            Write-Host "  [✓] Antigravity Desktop restarted with RTL Ultra!" -ForegroundColor Green
+        } else {
+            Write-Host "      Run: .\cli\apply-desktop.ps1 or re-run with -RestartDesktop to activate." -ForegroundColor Yellow
+        }
+    } else {
+        if (-not (Test-Path $backupAsar)) { Copy-Item $desktopAsar $backupAsar -Force }
+        Move-Item $patchedAsar $desktopAsar -Force
+        Write-Host "  [✓] Antigravity Desktop patched successfully!" -ForegroundColor Green
+    }
+}
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ENGINE 2: Antigravity IDE / VS Code / Cursor (CSS Workbench)
+# ─────────────────────────────────────────────────────────────────────────────
 $CSS_MARKER_START = "/* RTL-PATCH-START */"
 $CSS_MARKER_END   = "/* RTL-PATCH-END */"
 
-# 1. Read the compiled bundle CSS (Local or Remote)
-$patchCss = ""
-$bundleUrl = "https://raw.githubusercontent.com/sassil70/antigravity-rtl-ultra/main/src/styles/bundle.css"
-
-if ($MyInvocation.MyCommand.Path) {
-    $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-    $bundlePath = Join-Path (Split-Path -Parent $scriptDir) "src\styles\bundle.css"
-    if (Test-Path $bundlePath) {
-        $patchCss = [System.IO.File]::ReadAllText($bundlePath, [System.Text.Encoding]::UTF8)
-    }
-}
-
-if ([string]::IsNullOrWhiteSpace($patchCss)) {
-    try {
-        Write-Host "[*] Fetching bundle.css from GitHub..." -ForegroundColor Cyan
-        $patchCss = (Invoke-RestMethod -Uri $bundleUrl -UseBasicParsing)
-    } catch {
-        Write-Error "Could not load bundle.css locally or from $bundleUrl: $_"
-        exit 1
-    }
-}
-
-# 2. Find target IDE CSS files
-$localAppData = $env:LOCALAPPDATA
-$candidates = @(
+$cssTargets = @(
     "$localAppData\Programs\Antigravity IDE\resources\app\out\vs\workbench\workbench.desktop.main.css",
-    "$localAppData\Programs\Antigravity\resources\app\out\vs\workbench\workbench.desktop.main.css",
     "$localAppData\Programs\Cursor\resources\app\out\vs\workbench\workbench.desktop.main.css",
     "$localAppData\Programs\Windsurf\resources\app\out\vs\workbench\workbench.desktop.main.css",
-    "$localAppData\Programs\Qoder\resources\app\out\vs\workbench\workbench.desktop.main.css",
     "$localAppData\Programs\Microsoft VS Code\resources\app\out\vs\workbench\workbench.desktop.main.css"
 )
 
-$foundTargets = @()
-foreach ($path in $candidates) {
-    if (Test-Path $path) {
-        $foundTargets += $path
-    }
-}
-
-if ($foundTargets.Count -eq 0) {
-    Write-Warning "No supported IDE installations found in default locations."
-    exit 0
-}
-
-function Update-Checksum {
-    param (
-        [string]$cssPath,
-        [string]$newContent
-    )
+function Update-Checksum($cssPath, $newContent) {
     $appDir = Split-Path (Split-Path (Split-Path (Split-Path $cssPath)))
     $productJsonPath = Join-Path $appDir "product.json"
     if (Test-Path $productJsonPath) {
         try {
-            $rawJson = [System.IO.File]::ReadAllText($productJsonPath, [System.Text.Encoding]::UTF8)
-            $json = ConvertFrom-Json $rawJson
-            if ($null -ne $json.checksums) {
+            $json = Get-Content $productJsonPath -Raw | ConvertFrom-Json
+            if ($json.checksums -and $json.checksums.'vs/workbench/workbench.desktop.main.css') {
                 $sha256 = [System.Security.Cryptography.SHA256]::Create()
                 $bytes = [System.Text.Encoding]::UTF8.GetBytes($newContent)
                 $hash = [Convert]::ToBase64String($sha256.ComputeHash($bytes)).Replace("=", "")
-                if ($json.checksums.PSObject.Properties["vs/workbench/workbench.desktop.main.css"]) {
-                    $json.checksums."vs/workbench/workbench.desktop.main.css" = $hash
-                    $updatedJson = $json | ConvertTo-Json -Depth 10
-                    [System.IO.File]::WriteAllText($productJsonPath, $updatedJson, [System.Text.Encoding]::UTF8)
-                    Write-Host "  [+] product.json checksum updated successfully." -ForegroundColor Gray
-                }
+                $json.checksums.'vs/workbench/workbench.desktop.main.css' = $hash
+                $json | ConvertTo-Json -Depth 10 | Set-Content $productJsonPath -Encoding utf8
+                Write-Host "  [+] product.json checksum updated." -ForegroundColor Gray
             }
-        } catch {
-            Write-Warning "Failed to update checksum in product.json: $_"
-        }
+        } catch {}
     }
 }
 
-foreach ($target in $foundTargets) {
-    Write-Host "`nTarget: $target" -ForegroundColor Yellow
-    
-    # Create backup if not exists
-    $backup = "$target.rtlbak"
-    if (-not (Test-Path $backup)) {
-        Copy-Item $target $backup -Force
-        Write-Host "  [+] Created backup at: $backup" -ForegroundColor Gray
+foreach ($target in $cssTargets) {
+    if (Test-Path $target) {
+        Write-Host "`n[+] Detected IDE Installation: $target" -ForegroundColor Yellow
+        $backup = "$target.rtlbak"
+        if (-not (Test-Path $backup)) { Copy-Item $target $backup -Force }
+
+        $content = Get-Content $target -Raw
+        if ($content.Contains($CSS_MARKER_START) -and $content.Contains($CSS_MARKER_END)) {
+            $startIdx = $content.IndexOf($CSS_MARKER_START)
+            $endIdx = $content.IndexOf($CSS_MARKER_END) + $CSS_MARKER_END.Length
+            $content = $content.Substring(0, $startIdx) + $content.Substring($endIdx)
+        }
+
+        $newContent = $content + "`n`n" + $bundleCss
+        [System.IO.File]::WriteAllText($target, $newContent, [System.Text.Encoding]::UTF8)
+        Update-Checksum $target $newContent
+        Write-Host "  [✓] Applied successfully to workbench CSS!" -ForegroundColor Green
     }
-
-    $content = [System.IO.File]::ReadAllText($target, [System.Text.Encoding]::UTF8)
-
-    # Strip existing patch if present
-    if ($content.Contains($CSS_MARKER_START) -and $content.Contains($CSS_MARKER_END)) {
-        $startIdx = $content.IndexOf($CSS_MARKER_START)
-        $endIdx = $content.IndexOf($CSS_MARKER_END) + $CSS_MARKER_END.Length
-        $content = $content.Substring(0, $startIdx) + $content.Substring($endIdx)
-        Write-Host "  [-] Removed legacy patch." -ForegroundColor Gray
-    }
-
-    # Inject new patch
-    $newContent = $content.TrimEnd() + "`r`n`r`n" + $patchCss + "`r`n"
-    [System.IO.File]::WriteAllText($target, $newContent, [System.Text.Encoding]::UTF8)
-    Write-Host "  [OK] Antigravity RTL Ultra applied successfully!" -ForegroundColor Green
-
-    Update-Checksum -cssPath $target -newContent $newContent
 }
 
 Write-Host "`n==========================================================" -ForegroundColor Green
-Write-Host " Installation Complete! Please restart Antigravity IDE. " -ForegroundColor Green
+Write-Host " Universal Installation Finished!                         " -ForegroundColor Green
 Write-Host "==========================================================" -ForegroundColor Green
-
-

@@ -141,3 +141,24 @@ To guarantee 100% forensic integrity and zero layout regressions, the engine is 
 5. **Test Case 5 (Monaco Editor & Code Block Immunity):**
    * *Input:* Multi-line Python/Dart code inside chat and artifacts.
    * *Expected:* Indentation, brackets, syntax highlighting remain strictly LTR and left-aligned.
+
+---
+
+## 7. Antigravity 2.12.0+ Architecture Update (Electron ASAR & Preload Injection)
+
+### 7.1. Architectural Shift in Antigravity 2.x
+In Antigravity Desktop 2.12.0 (released September 2026), the application transitioned from an open VS Code workbench directory to a fully compiled **Electron ASAR package** (`resources\app.asar`).
+The frontend is rendered via a local, secure language server (`https://127.0.0.1:<port>`), meaning there is no longer a static `workbench.desktop.main.css` file on disk for the desktop client.
+
+### 7.2. The Dual-Engine Solution
+To ensure universal compatibility across all versions and forks, Antigravity RTL Ultra provides two distinct deployment engines:
+
+1. **Engine 1: ASAR Preload Injector (For Antigravity Desktop 2.x):**
+   * Extracts `app.asar`.
+   * Injects the dual-pane style engine directly into `dist/preload.js`.
+   * Automatically executes on `DOMContentLoaded` and monitors dynamic view transitions.
+   * Repacks into `app.asar` with native unpack rules for embedded modules (`chrome-devtools-mcp`).
+
+2. **Engine 2: CSS Workbench Patcher (For Antigravity IDE, Cursor, Windsurf, VS Code):**
+   * Injects the compiled `bundle.css` into `workbench.desktop.main.css`.
+   * Recalculates SHA256 checksums in `product.json` to prevent corruption alerts.
