@@ -3,19 +3,32 @@
 <div align="center">
 
 # محرك توجيه النصوص ثنائي النطاق للذكاء الاصطناعي والمستندات
-### Universal Dual-Pane Right-to-Left (RTL) Engine for Antigravity IDE, Cursor & VS Code
+### Universal Dual-Pane Right-to-Left (RTL) Engine for Antigravity Desktop, Antigravity IDE, Cursor & VS Code
 
 [![GitHub Stars](https://img.shields.io/github/stars/sassil70/antigravity-rtl-ultra?style=for-the-badge&logo=github&color=gold)](https://github.com/sassil70/antigravity-rtl-ultra/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/sassil70/antigravity-rtl-ultra?style=for-the-badge&color=blue)](https://github.com/sassil70/antigravity-rtl-ultra/network/members)
+[![Version](https://img.shields.io/badge/Version-2.0.0%20(Latest)-blue.svg?style=for-the-badge)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-brightgreen.svg?style=for-the-badge)]()
-[![Supported IDEs](https://img.shields.io/badge/IDEs-Antigravity%20%7C%20Cursor%20%7C%20Windsurf%20%7C%20VS%20Code-purple.svg?style=for-the-badge)]()
+[![Supported Environments](https://img.shields.io/badge/Supported-Antigravity%202.x%20Desktop%20%7C%20IDE%20%7C%20Cursor%20%7C%20VS%20Code-purple.svg?style=for-the-badge)]()
 
 <br/>
 
-**[🇸🇦 العربية](#-نظرة-عامة--لماذا-antigravity-rtl-ultra) • [🇬🇧 English](#-overview--why-antigravity-rtl-ultra) • [⚡ التثبيت السريع / Quick Install](#-تثبيت-سريع-بنقرة-واحدة--1-click-quick-install) • [🔄 التراجع والعودة / Safe Rollback](#-التراجع-والاستعادة-الآمنة-100--100-safe-rollback) • [⭐ ادعم المشروع / Support & Stars](#-ادعم-المشروع-وشارك-في-تمكين-المطور-العربي--support-the-community)**
+**[🇸🇦 العربية](#-نظرة-عامة--لماذا-antigravity-rtl-ultra) • [🆕 تحديث v2.0.0](#-تحديث-المعمارية-v200-لدعم-antigravity-212) • [🇬🇧 English](#-overview--why-antigravity-rtl-ultra) • [⚡ التثبيت السريع / Quick Install](#-تثبيت-سريع-بنقرة-واحدة--1-click-quick-install) • [🔄 التراجع والعودة / Safe Rollback](#-التراجع-والاستعادة-الآمنة-100--100-safe-rollback) • [⭐ ادعم المشروع / Support & Stars](#-ادعم-المشروع-وشارك-في-تمكين-المطور-العربي--support-the-community)**
 
 </div>
+
+---
+
+## 🆕 تحديث المعمارية v2.0.0 لدعم Antigravity 2.12+ 
+
+> [!IMPORTANT]
+> **تحديث معماري ضخم (سبتمبر 2026):**
+> أطلقت شركة Google تحديث Antigravity Desktop 2.12.0، وفيه تم تحويل بنية التطبيق من ملفات VS Code المفتوحة إلى **حزمة Electron ASAR مغلقة ومضغوطة** (`resources\app.asar`).
+> 
+> تم ترقية **Antigravity RTL Ultra** ليكون **محركاً شاملاً مزدوج الدعم (Universal Dual-Engine)**:
+> 1. **المحرك الأول (Electron ASAR Injector):** يقوم بفك حزمة `app.asar` وحقن محرك الـ RTL Ultra ثنائي النطاق مباشرة داخل سكريبت الإقلاع `dist/preload.js` مع إعادة التجميع الذكية، وتطبيقها بنقرة واحدة عبر `apply-desktop.ps1`.
+> 2. **المحرك الثاني (Classic CSS Patcher):** يواصل الدعم الكامل لملفات `workbench.desktop.main.css` لمحررات `Antigravity IDE` و `Cursor` و `Windsurf` و `VS Code`.
 
 ---
 
@@ -23,7 +36,7 @@
 
 هل عانيت يوماً عند التحدث باللغة العربية مع مساعدك الذكي في بيئة التطوير من انقلاب علامات الترقيم، أو قفز مسارات الملفات مثل `` `config.json` ``، أو تشوه القوائم النقطية، أو بقاء لوحة المستندات والتقارير (**Artifacts Viewer**) مشدودة ومحشورة في أقصى اليسار؟
 
-مشروع **Antigravity RTL Ultra** جاء ليضع حداً نهائياً لهذه المشاكل عبر **محرك توجيه ذكي ثنائي النطاق (Dual-Pane BiDi Engine)** مصمم هندسياً لبيئات التطوير المدعومة بالذكاء الاصطناعي:
+مشروع **Antigravity RTL Ultra** جاء ليضع حداً نهائياً لهذه المشاكل عبر **محرك توجيه ذكي ثنائي النطاق (Dual-Pane BiDi Engine)**:
 1. **لوحة المحادثة مع الذكاء الاصطناعي (AI Chat Pane):** قراءة عربية طبيعية وانسيابية مع ضبط تام للترقيم والقوائم.
 2. **لوحة المستندات والتقارير والخطط (Artifacts / Reports Pane):** عرض كامل من اليمين لليسار يشمل العناوين، الجداول، وأشرطة التنبيهات (`[!IMPORTANT]`, `[!NOTE]`).
 3. **حجر صحي صارم للأكواد (Code Containment):** بقاء محرر الأكواد Monaco Editor وكتل البرمجة بلغة `LTR` الأصلية دون أدنى تأثير.
@@ -34,33 +47,37 @@
 
 Have you ever struggled with broken Arabic / RTL formatting when collaborating with AI coding agents? Inverted punctuation, jumping inline code snippets, mangled lists, and left-clamped **Artifacts & Reports panels** ruin the developer experience.
 
-**Antigravity RTL Ultra** is the first architecturally robust **Dual-Pane BiDi Engine** built specifically for modern AI IDEs (**Google Antigravity IDE**, **Cursor**, **Windsurf**, and **VS Code**). It delivers seamless right-to-left layout for both chat conversations and markdown reports while strictly preserving code blocks and English text flow.
+**Antigravity RTL Ultra** is the first architecturally robust **Dual-Pane BiDi Engine** supporting both modern **Electron ASAR apps** (Antigravity 2.12+) and **VS Code forks** (Antigravity IDE, Cursor, Windsurf). It delivers seamless right-to-left layout for both chat conversations and markdown reports while strictly preserving code blocks and English text flow.
 
 ---
 
 ## ⚡ تثبيت سريع بنقرة واحدة / 1-Click Quick Install
 
-لا حاجة لتثبيت حزم معقدة أو إجراء تعديلات يدوية. اختر نظام تشغيلك ونفّذ الأمر المباشر في الطرفية (Terminal):
+### 1️⃣ لتطبيق الترقيع على تطبيق Antigravity Desktop (الإصدار 2.x الجديد):
+افتح **PowerShell** ونفّذ سكريبت التفعيل السريع:
+```powershell
+powershell -ExecutionPolicy Bypass -File ".\cli\apply-desktop.ps1"
+```
+*(أو عبر الرابط المباشر من GitHub)*:
+```powershell
+irm https://raw.githubusercontent.com/sassil70/antigravity-rtl-ultra/main/cli/install.ps1 | iex
+```
 
-### 🪟 Windows (PowerShell)
-افتح **PowerShell** والصق السطر التالي:
+### 2️⃣ لتطبيق الترقيع على Antigravity IDE / Cursor / VS Code (محررات كود CSS):
 ```powershell
 irm https://raw.githubusercontent.com/sassil70/antigravity-rtl-ultra/main/cli/install.ps1 | iex
 ```
 
 ### 🍎 macOS / 🐧 Linux (Terminal)
-افتح **Terminal** والصق السطر التالي:
 ```bash
 curl -fsSL https://raw.githubusercontent.com/sassil70/antigravity-rtl-ultra/main/cli/install.sh | bash
 ```
-
-> **ملاحظة:** بعد اكتمال التثبيت، يرجى إعادة تشغيل بيئة التطوير (**Restart Antigravity IDE**) أو الضغط على `Ctrl + Shift + P` واختيار **`Developer: Reload Window`**.
 
 ---
 
 ## 🔄 التراجع والاستعادة الآمنة 100% / 100% Safe Rollback
 
-> 🛡️ **ضمان الأمان الكامل:** يقوم المثبّت تلقائياً بإنشاء نسخة احتياطية خام (`.rtlbak`) قبل لمس أي ملف. يمكنك التراجع واستعادة الوضع الأصلي للمصنع في أي لحظة بنقرة واحدة وبأمان تام!
+> 🛡️ **ضمان الأمان الكامل:** يقوم المثبّت تلقائياً بإنشاء نسخة احتياطية خام (`.rtlbak` للملفات و `app.asar.rtlbak` لتطبيق Electron) قبل لمس أي ملف. يمكنك التراجع واستعادة الوضع الأصلي للمصنع في أي لحظة بنقرة واحدة وبأمان تام!
 
 ### 🪟 Windows Rollback
 ```powershell
@@ -78,6 +95,7 @@ curl -fsSL https://raw.githubusercontent.com/sassil70/antigravity-rtl-ultra/main
 
 | الميزة / Feature | الوصف الفني / Technical Detail | الفائدة / Benefit |
 | :--- | :--- | :--- |
+| ⚡ **دعم Antigravity 2.x ASAR** | حقن كود الـ BiDi في `preload.js` داخل حزم Electron المضغوطة. | التوافق التام مع التحديث الجديد للتطبيق المكتبي. |
 | 🔄 **ثنائي النطاق (Dual-Pane)** | يدعم لوحة المحادثة + لوحة الـ Artifacts والتقارير المستقلة. | قراءة المستندات والخطط العربية بنفس جودة واجهة الشات. |
 | 🛡️ **عزل حقيقي للأكواد (BiDi Isolation)** | استخدام `unicode-bidi: isolate` الصريح بدلاً من `inline-block`. | منع قفز النقطتين الرأسيتين والأقواس حول أسماء الملفات. |
 | 📝 **قوائم نقطية ومرقمة متناسقة** | الاعتماد على الخصائص المنطقية `padding-inline-start`. | الحفاظ على ترقيم المتصفح الأصلي والمحاذاة السليمة. |
@@ -104,9 +122,10 @@ curl -fsSL https://raw.githubusercontent.com/sassil70/antigravity-rtl-ultra/main
 
 ---
 
-## 🏗️ المعمارية الفنية وحالات الاختبار / Knowledge Base
+## 🏗️ سجل التغييرات والمعمارية / Documentation
 
-للاطلاع على التحليل الجنائي الشامل وحالات الاختبار المعيارية الـ 5 المقارنة مع المشاريع السابقة، يرجى مراجعة [KNOWLEDGE_BASE.md](KNOWLEDGE_BASE.md).
+- للاطلاع على سجل التغييرات التفصيلي للنسخة 2.0.0: [CHANGELOG.md](CHANGELOG.md)
+- للاطلاع على التحليل الجنائي الشامل وحالات الاختبار المعيارية: [KNOWLEDGE_BASE.md](KNOWLEDGE_BASE.md)
 
 ---
 
