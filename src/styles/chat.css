@@ -1,8 +1,19 @@
-﻿/* ==========================================================================
-   Antigravity RTL Ultra — AI Chat & Cascade Conversation Panel
+/* ==========================================================================
+   Antigravity RTL Ultra — AI Chat & Cascade Conversation Panel (v2.1)
    ========================================================================== */
 
-/* ── Chat Container List Alignment (Preserving Native Counters & Bullets) ─ */
+/* ── Smart RTL Lists in Antigravity 2.x (Jetbox) & Workbench ──────────────── */
+:is(ul, ol)[dir="rtl"],
+.md-divider-spacing :is(ul, ol)[dir="rtl"] {
+    direction: rtl !important;
+    text-align: right !important;
+    padding-right: 1.5rem !important;
+    padding-left: 0 !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+/* ── Chat Container List Alignment (Preserving Native Counters & Bullets) ─── */
 .monaco-workbench .chat-widget ul,
 .monaco-workbench .chat-widget ol,
 .monaco-workbench .interactive-session ul,
@@ -27,31 +38,53 @@
     margin-inline-end: 0 !important;
 }
 
-/* ── List Items Direction & Spacing ───────────────────────────────────── */
-.monaco-workbench .chat-widget li,
-.monaco-workbench .interactive-session li,
-.monaco-workbench .chat-container li,
-.monaco-workbench .interactive-container li,
-.monaco-workbench .part.auxiliarybar li,
-.monaco-workbench .part.sidebar li,
-.monaco-workbench .part.panel li,
-[class*="cascade"] li,
-[class*="chat-"] li {
+/* ── List Items Direction & Spacing ───────────────────────────────────────── */
+.md-divider-spacing li[dir="rtl"],
+.monaco-workbench .chat-widget li[dir="rtl"],
+.monaco-workbench .interactive-session li[dir="rtl"] {
+    direction: rtl !important;
+    unicode-bidi: normal !important;
+    text-align: right !important;
+    margin-bottom: 0.35em !important;
+}
+
+.monaco-workbench .chat-widget li:not([dir="rtl"]),
+.monaco-workbench .interactive-session li:not([dir="rtl"]),
+.monaco-workbench .chat-container li:not([dir="rtl"]),
+.monaco-workbench .interactive-container li:not([dir="rtl"]),
+.monaco-workbench .part.auxiliarybar li:not([dir="rtl"]),
+.monaco-workbench .part.sidebar li:not([dir="rtl"]),
+.monaco-workbench .part.panel li:not([dir="rtl"]),
+[class*="cascade"] li:not([dir="rtl"]),
+[class*="chat-"] li:not([dir="rtl"]) {
     unicode-bidi: plaintext !important;
     text-align: start !important;
     margin-bottom: 0.35em !important;
 }
 
-/* ── Blockquotes in Chat ──────────────────────────────────────────────── */
-.monaco-workbench .chat-widget blockquote,
-.monaco-workbench .interactive-session blockquote,
-.monaco-workbench .chat-container blockquote,
-.monaco-workbench .interactive-container blockquote,
-.monaco-workbench .part.auxiliarybar blockquote,
-.monaco-workbench .part.sidebar blockquote,
-.monaco-workbench .part.panel blockquote,
-[class*="cascade"] blockquote,
-[class*="chat-"] blockquote {
+/* ── Blockquotes in Chat (Antigravity 2.x Jetbox & Classic Workbench) ─────── */
+blockquote[dir="rtl"],
+.md-divider-spacing blockquote[dir="rtl"] {
+    direction: rtl !important;
+    unicode-bidi: normal !important;
+    text-align: right !important;
+    border-left: none !important;
+    border-right: 4px solid var(--border, var(--vscode-textBlockQuote-border, rgba(255, 255, 255, 0.25))) !important;
+    padding-right: 1rem !important;
+    padding-left: 0.75rem !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+.monaco-workbench .chat-widget blockquote:not([dir="rtl"]),
+.monaco-workbench .interactive-session blockquote:not([dir="rtl"]),
+.monaco-workbench .chat-container blockquote:not([dir="rtl"]),
+.monaco-workbench .interactive-container blockquote:not([dir="rtl"]),
+.monaco-workbench .part.auxiliarybar blockquote:not([dir="rtl"]),
+.monaco-workbench .part.sidebar blockquote:not([dir="rtl"]),
+.monaco-workbench .part.panel blockquote:not([dir="rtl"]),
+[class*="cascade"] blockquote:not([dir="rtl"]),
+[class*="chat-"] blockquote:not([dir="rtl"]) {
     border-left: none !important;
     border-right: none !important;
     border-inline-start: 4px solid var(--vscode-textBlockQuote-border, rgba(255, 255, 255, 0.25)) !important;
@@ -63,27 +96,32 @@
     text-align: start !important;
 }
 
-/* ── Tables in Chat ───────────────────────────────────────────────────── */
+/* ── Tables in Chat ───────────────────────────────────────────────────────── */
+table[dir="rtl"],
+.md-divider-spacing table[dir="rtl"] {
+    direction: rtl !important;
+    border-collapse: collapse !important;
+}
+
 .monaco-workbench .chat-widget table,
 .monaco-workbench .interactive-session table,
 .monaco-workbench .chat-container table,
 .monaco-workbench .interactive-container table,
 [class*="cascade"] table,
 [class*="chat-"] table {
-    direction: inherit !important;
     border-collapse: collapse !important;
 }
 
-.monaco-workbench .chat-widget th,
-.monaco-workbench .chat-widget td,
-.monaco-workbench .interactive-session th,
-.monaco-workbench .interactive-session td,
-.monaco-workbench .chat-container th,
-.monaco-workbench .chat-container td,
-[class*="cascade"] th,
-[class*="cascade"] td,
-[class*="chat-"] th,
-[class*="chat-"] td {
+.monaco-workbench .chat-widget th:not([dir="rtl"]),
+.monaco-workbench .chat-widget td:not([dir="rtl"]),
+.monaco-workbench .interactive-session th:not([dir="rtl"]),
+.monaco-workbench .interactive-session td:not([dir="rtl"]),
+.monaco-workbench .chat-container th:not([dir="rtl"]),
+.monaco-workbench .chat-container td:not([dir="rtl"]),
+[class*="cascade"] th:not([dir="rtl"]),
+[class*="cascade"] td:not([dir="rtl"]),
+[class*="chat-"] th:not([dir="rtl"]),
+[class*="chat-"] td:not([dir="rtl"]) {
     text-align: start !important;
     unicode-bidi: plaintext !important;
 }

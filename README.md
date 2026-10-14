@@ -1,74 +1,38 @@
-﻿# Antigravity RTL Ultra 🚀
+# Antigravity RTL Ultra 🚀 (v2.1)
 
 <div align="center">
 
-# محرك توجيه النصوص ثنائي النطاق للذكاء الاصطناعي والمستندات
-### Universal Dual-Pane Right-to-Left (RTL) Engine for Antigravity Desktop, Antigravity IDE, Cursor & VS Code
+# المحرك الذكي الشامل لدعم اللغة العربية ومنع انقلاب الجمل في Antigravity 2.23+
+### Universal Zero-Downtime Right-to-Left (RTL) & UAX #9 BiDi Isolation Engine for Antigravity Desktop 2.x, Antigravity IDE, Cursor, Windsurf & VS Code
 
 [![GitHub Stars](https://img.shields.io/github/stars/sassil70/antigravity-rtl-ultra?style=for-the-badge&logo=github&color=gold)](https://github.com/sassil70/antigravity-rtl-ultra/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/sassil70/antigravity-rtl-ultra?style=for-the-badge&color=blue)](https://github.com/sassil70/antigravity-rtl-ultra/network/members)
-[![Version](https://img.shields.io/badge/Version-2.0.0%20(Latest)-blue.svg?style=for-the-badge)]()
+[![Version](https://img.shields.io/badge/Version-2.1.0%20(Jetbox%20Ready)-blue.svg?style=for-the-badge)](CHANGELOG.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-brightgreen.svg?style=for-the-badge)]()
-[![Supported Environments](https://img.shields.io/badge/Supported-Antigravity%202.x%20Desktop%20%7C%20IDE%20%7C%20Cursor%20%7C%20VS%20Code-purple.svg?style=for-the-badge)]()
+[![Zero Downtime](https://img.shields.io/badge/Live%20Patch-Zero%20Restart%20Needed-orange.svg?style=for-the-badge)]()
 
 <br/>
 
-**[🇸🇦 العربية](#-نظرة-عامة--لماذا-antigravity-rtl-ultra) • [🆕 تحديث v2.0.0](#-تحديث-المعمارية-v200-لدعم-antigravity-212) • [🇬🇧 English](#-overview--why-antigravity-rtl-ultra) • [⚡ التثبيت السريع / Quick Install](#-تثبيت-سريع-بنقرة-واحدة--1-click-quick-install) • [🔄 التراجع والعودة / Safe Rollback](#-التراجع-والاستعادة-الآمنة-100--100-safe-rollback) • [⭐ ادعم المشروع / Support & Stars](#-ادعم-المشروع-وشارك-في-تمكين-المطور-العربي--support-the-community)**
+**[⚡ تثبيت بأمر واحد / 1-Command Install](#-تثبيت-فوري-بأمر-واحد-بدون-إغلاق-البرنامج--1-command-live-install) • [🔄 التراجع الآمن / 1-Click Rollback](#-التراجع-والاستعادة-الآمنة-100--100-safe-rollback) • [🆕 ما الجديد في v2.1؟](#-تحديث-v210-الحل-الجذري-لانقلاب-الكلمات-الإنجليزية-في-antigravity-223) • [🇬🇧 English](#-english-overview--architecture) • [⭐ ادعم المشروع بنجمة / Give a Star](#-ادعم-المشروع-بإضافة-نجمة-star--support-the-community)**
 
 </div>
 
 ---
 
-## 🆕 تحديث المعمارية v2.0.0 لدعم Antigravity 2.12+ 
+## ⚡ تثبيت فوري بأمر واحد (بدون إغلاق البرنامج!) / 1-Command Live Install
 
-> [!IMPORTANT]
-> **تحديث معماري ضخم (سبتمبر 2026):**
-> أطلقت شركة Google تحديث Antigravity Desktop 2.12.0، وفيه تم تحويل بنية التطبيق من ملفات VS Code المفتوحة إلى **حزمة Electron ASAR مغلقة ومضغوطة** (`resources\app.asar`).
-> 
-> تم ترقية **Antigravity RTL Ultra** ليكون **محركاً شاملاً مزدوج الدعم (Universal Dual-Engine)**:
-> 1. **المحرك الأول (Electron ASAR Injector):** يقوم بفك حزمة `app.asar` وحقن محرك الـ RTL Ultra ثنائي النطاق مباشرة داخل سكريبت الإقلاع `dist/preload.js` مع إعادة التجميع الذكية، وتطبيقها بنقرة واحدة عبر `apply-desktop.ps1`.
-> 2. **المحرك الثاني (Classic CSS Patcher):** يواصل الدعم الكامل لملفات `workbench.desktop.main.css` لمحررات `Antigravity IDE` و `Cursor` و `Windsurf` و `VS Code`.
+> [!TIP]
+> **تفعيل لحظي مباشر (Live Hot-Injection) بدون أي تخريب أو إغلاق للبرنامج:**
+> يعمل هذا الأمر الواحد مباشرةً حتى أثناء فتح برنامج **Antigravity**؛ حيث يأخذ نسخة احتياطية خام (`app.asar.rtlbak`)، ويحقن المحرك الذكي بأمان تام بدون الحاجة لـ `npx` أو أي مكتبات خارجية، **ويُفعّل إصلاح اللغة العربية فوراً أمام عينيك على النافذة المفتوحة في أجزاء من الثانية دون الحاجة لإعادة تشغيل البرنامج!**
 
----
-
-## 🌟 نظرة عامة / لماذا Antigravity RTL Ultra؟
-
-هل عانيت يوماً عند التحدث باللغة العربية مع مساعدك الذكي في بيئة التطوير من انقلاب علامات الترقيم، أو قفز مسارات الملفات مثل `` `config.json` ``، أو تشوه القوائم النقطية، أو بقاء لوحة المستندات والتقارير (**Artifacts Viewer**) مشدودة ومحشورة في أقصى اليسار؟
-
-مشروع **Antigravity RTL Ultra** جاء ليضع حداً نهائياً لهذه المشاكل عبر **محرك توجيه ذكي ثنائي النطاق (Dual-Pane BiDi Engine)**:
-1. **لوحة المحادثة مع الذكاء الاصطناعي (AI Chat Pane):** قراءة عربية طبيعية وانسيابية مع ضبط تام للترقيم والقوائم.
-2. **لوحة المستندات والتقارير والخطط (Artifacts / Reports Pane):** عرض كامل من اليمين لليسار يشمل العناوين، الجداول، وأشرطة التنبيهات (`[!IMPORTANT]`, `[!NOTE]`).
-3. **حجر صحي صارم للأكواد (Code Containment):** بقاء محرر الأكواد Monaco Editor وكتل البرمجة بلغة `LTR` الأصلية دون أدنى تأثير.
-
----
-
-## 🇬🇧 Overview / Why Antigravity RTL Ultra?
-
-Have you ever struggled with broken Arabic / RTL formatting when collaborating with AI coding agents? Inverted punctuation, jumping inline code snippets, mangled lists, and left-clamped **Artifacts & Reports panels** ruin the developer experience.
-
-**Antigravity RTL Ultra** is the first architecturally robust **Dual-Pane BiDi Engine** supporting both modern **Electron ASAR apps** (Antigravity 2.12+) and **VS Code forks** (Antigravity IDE, Cursor, Windsurf). It delivers seamless right-to-left layout for both chat conversations and markdown reports while strictly preserving code blocks and English text flow.
-
----
-
-## ⚡ تثبيت سريع بنقرة واحدة / 1-Click Quick Install
-
-### 1️⃣ لتطبيق الترقيع على تطبيق Antigravity Desktop (الإصدار 2.x الجديد):
-افتح **PowerShell** ونفّذ سكريبت التفعيل السريع:
-```powershell
-powershell -ExecutionPolicy Bypass -File ".\cli\apply-desktop.ps1"
-```
-*(أو عبر الرابط المباشر من GitHub)*:
+### 🪟 Windows (PowerShell — أمر واحد فقط / Single Command)
+انسخ هذا الأمر والصقه في **PowerShell** ثم اضغط `Enter`:
 ```powershell
 irm https://raw.githubusercontent.com/sassil70/antigravity-rtl-ultra/main/cli/install.ps1 | iex
 ```
 
-### 2️⃣ لتطبيق الترقيع على Antigravity IDE / Cursor / VS Code (محررات كود CSS):
-```powershell
-irm https://raw.githubusercontent.com/sassil70/antigravity-rtl-ultra/main/cli/install.ps1 | iex
-```
-
-### 🍎 macOS / 🐧 Linux (Terminal)
+### 🍎 macOS / 🐧 Linux (Terminal — أمر واحد فقط / Single Command)
 ```bash
 curl -fsSL https://raw.githubusercontent.com/sassil70/antigravity-rtl-ultra/main/cli/install.sh | bash
 ```
@@ -77,9 +41,11 @@ curl -fsSL https://raw.githubusercontent.com/sassil70/antigravity-rtl-ultra/main
 
 ## 🔄 التراجع والاستعادة الآمنة 100% / 100% Safe Rollback
 
-> 🛡️ **ضمان الأمان الكامل:** يقوم المثبّت تلقائياً بإنشاء نسخة احتياطية خام (`.rtlbak` للملفات و `app.asar.rtlbak` لتطبيق Electron) قبل لمس أي ملف. يمكنك التراجع واستعادة الوضع الأصلي للمصنع في أي لحظة بنقرة واحدة وبأمان تام!
+> [!IMPORTANT]
+> **أمان مطلق 100% (Zero-Risk Guarantee):**
+> قبل تعديل أي بايت واحد، ينشئ السكريبت تلقائياً نسخة احتياطية مطابقة للأصل (`app.asar.rtlbak` و `.rtlbak`). يمكنك في أي لحظة إلغاء التعديل واستعادة ملفات المصنع الأصلية 100% فوراً وبأمر واحد فقط (حتى بدون إغلاق البرنامج!):
 
-### 🪟 Windows Rollback
+### 🪟 Windows Rollback (أمر التراجع الفوري)
 ```powershell
 irm https://raw.githubusercontent.com/sassil70/antigravity-rtl-ultra/main/cli/uninstall.ps1 | iex
 ```
@@ -91,44 +57,76 @@ curl -fsSL https://raw.githubusercontent.com/sassil70/antigravity-rtl-ultra/main
 
 ---
 
-## ✨ أهم المميزات والحلول الهندسية / Key Architectural Features
+## 🆕 تحديث v2.1.0: الحل الجذري لانقلاب الكلمات الإنجليزية في Antigravity 2.23+
 
-| الميزة / Feature | الوصف الفني / Technical Detail | الفائدة / Benefit |
-| :--- | :--- | :--- |
-| ⚡ **دعم Antigravity 2.x ASAR** | حقن كود الـ BiDi في `preload.js` داخل حزم Electron المضغوطة. | التوافق التام مع التحديث الجديد للتطبيق المكتبي. |
-| 🔄 **ثنائي النطاق (Dual-Pane)** | يدعم لوحة المحادثة + لوحة الـ Artifacts والتقارير المستقلة. | قراءة المستندات والخطط العربية بنفس جودة واجهة الشات. |
-| 🛡️ **عزل حقيقي للأكواد (BiDi Isolation)** | استخدام `unicode-bidi: isolate` الصريح بدلاً من `inline-block`. | منع قفز النقطتين الرأسيتين والأقواس حول أسماء الملفات. |
-| 📝 **قوائم نقطية ومرقمة متناسقة** | الاعتماد على الخصائص المنطقية `padding-inline-start`. | الحفاظ على ترقيم المتصفح الأصلي والمحاذاة السليمة. |
-| 🚨 **تنبيهات GitHub منسقة** | توجيه أشرطة التنبيه (`[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`). | ظهور خط التنبيه على الحافة اليمنى للنصوص العربية. |
-| 🔒 **حجر صحي للأكواد (Monaco Editor)** | تثبيت اتجاه `direction: ltr` الصارم لكافة كتل الأكواد والـ Diff. | عدم تأثر محاذاة وتنسيق لغات البرمجة إطلاقاً. |
+### 🔍 لماذا كانت الجملة العربية تنقلب عند ورود كلمة إنجليزية مثل `github` أو `Bug`؟
+في التحديثات الأخيرة لبرنامج **Antigravity 2.x (معمارية Jetbox)**، يقوم مكون عرض ردود الذكاء الاصطناعي (`CustomMarkdown`) بتوليد الفقرات `<p>` والقوائم `<li>` والعناوين `<h1>-<h6>` باتجاه أساسي من اليسار لليمين (`LTR - Level 0`) مع تقطيع كل كلمة داخل `<span>` مستقل.
+بموجب **خوارزمية اليونيكود ثنائية الاتجاه (UAX #9)**:
+- ما دامت الجملة عربية خالصة، تتماسك في جزيرة واحدة (`Level 1`).
+- **بمجرد دخول كلمة إنجليزية واحدة** (مثل `github`، `Bug`، `README.md`، `Eng. Saleem Asseel`)، تهبط الكلمة الإنجليزية إلى المستوى الأساسي للفقرة (`Level 0 - LTR`) وتقسم الجملة العربية إلى شطرين، فيقوم المتصفح بترتيب الشطرين **من اليسار إلى اليمين** (فتنقلب بداية الجملة إلى آخرها، وتنعكس الأقواس `(في مسار الويندوز (Bug` وتقفز النقطتان `:` إلى الطرف المعاكس!).
+
+### 🛡️ كيف يعالج Antigravity RTL Ultra v2.1 هذه المشكلة جذرياً؟
+1. **الرصد الذكي للنصوص العربية (Smart DOM BiDi Observer):**
+   مراقب `MutationObserver` فائق الخفة يفحص الفقرات وعناصر القوائم والعناوين لحظياً أثناء تدفق رد الذكاء الاصطناعي (Streaming)؛ فإذا اكتشف حروفاً عربية، يضبط هوية العنصر الأساسية على `dir="rtl"` مع `unicode-bidi: normal !important` (مما يمنع حتى فواصل الأسطر `<br>` من قلب السطر التالي إذا بدأ بكلمة إنجليزية!).
+2. **عزل الجزر الإنجليزية والأكواد المضمنة (Strict UAX #9 Isolation):**
+   تطبيق `unicode-bidi: isolate !important; direction: ltr !important;` على كافة الأكواد المضمنة `<code>`، وأزرار الإشارة للملفات `.context-scope-mention` و `.inline-pill`، والروابط الإنجليزية `a.text-link`، بحيث تستقر الكلمة الإنجليزية في موضعها الطبيعي داخل الجملة العربية دون أن تؤثر على الأقواس `()` أو النقطتين `:` المجاورة لها.
+3. **حجر صحي صارم لكتل الأكواد (Jetbox & Monaco Code Quarantine):**
+   عزل تام لكلاسات الكود في النسخة الجديدة (`.code-block`, `.code-line`, `.line-content`, `pre`, `.monaco-editor`, `.terminal`) لتبقى دائماً من اليسار لليمين (`LTR`) بنسبة 100%.
+4. **حقن ثنائي بدون توقف (In-Place Native .NET ASAR Patcher + CDP Hot-Inject):**
+   لا يحتاج إلى `npx` أو `node` أو فك ضغط آلاف الملفات، ولا يغلق جلسات عملك المفتوحة!
 
 ---
 
-## ⭐ ادعم المشروع وشارك في تمكين المطور العربي / Support the Community
+## 🇬🇧 English Overview & Architecture
 
-هذا المشروع مفتوح المصدر ومبني لخدمة مجتمع المطورين العرب والمستخدمين للغات الشرقية. دعمك للمشروع يساهم في إيصاله للجميع ويساعد في تطويره باستمرار:
+### Why do English words (`github`, `Bug`, `README.md`) scramble Arabic sentences in Antigravity 2.x?
+In **Antigravity 2.x (Jetbox architecture)**, while the user input box uses Meta's **Lexical** editor (which automatically sets `dir="rtl"`), the AI response renderer (`CustomMarkdown`) renders `<p>`, `<li>`, and `<h1>–<h6>` elements without a `dir` attribute—inheriting `<html lang="en">` (`direction: ltr`, Embedding Level 0)—and splits words into animated `<span>` elements.
+Under the **Unicode Bidirectional Algorithm (UAX #9)**:
+- Any English word (`L`) inside an `LTR` paragraph drops to **Level 0**, splitting the Arabic sentence (`Level 1`) into separate islands that get ordered **left-to-right** (Rule L2), while paired brackets `(Bug ...)` and trailing colons `:` resolve to `LTR` (Rules N0b, N1, N2) and flip across the line.
+- Furthermore, pure `unicode-bidi: plaintext` resets directionality after forced line breaks (`<br>`), breaking lines that start with inline code or English names.
 
-1. ⭐ **أضف نجمة للمشروع (Give a Star):** اضغط على زر **Star** في أعلى صفحة المستودع لجمع النقاط وزيادة موثوقية وانتشار الأداة.
-2. 📢 **شارك الأداة:** شارك رابط المستودع مع زملائك المطورين ومجتمعات التقنية وصناع المحتوى.
-3. 💡 **ساهم معنا (Contribute & Fork):** نرحب بجميع المقترحات والمساهمات وفتح الـ Issues أو الـ Pull Requests.
+### How Antigravity RTL Ultra v2.1 Solves It
+- **Hybrid CSS + Smart DOM BiDi Observer:** Detects Arabic Unicode ranges (`U+0600..U+06FF`, etc.) on block elements and sets `dir="rtl"` with `unicode-bidi: normal !important`, keeping pure English paragraphs and UI headers (`h2.select-none`) 100% `LTR`.
+- **Inline Token Isolation:** Wraps `:not(pre) > code`, `.context-scope-mention`, `.inline-pill`, and URLs in `unicode-bidi: isolate !important; direction: ltr !important;`.
+- **Zero-Downtime Binary ASAR Patcher & Live CDP Injection:** Appends the patched `dist/preload.js` to `resources/app.asar` in-place (<50ms, preserving all existing byte offsets and updating the SHA-256 integrity hash) and hot-injects the engine into running windows via `DevToolsActivePort`.
+
+---
+
+## ✨ مقارنة المميزات الهندسية / Architectural Comparison
+
+| الميزة / Feature | بدون الأداة / Default Antigravity 2.x | مع Antigravity RTL Ultra v2.1 |
+| :--- | :--- | :--- |
+| **كلمات إنجليزية وسط العربي (`github`, `Bug`)** | ❌ تشطر الجملة العربية وتعكس ترتيب شطريها | ✅ تستقر في مكانها الطبيعي من اليمين لليسار |
+| **الأقواس وعلامات الترقيم `(Bug ...):`** | ❌ تنقلب الأقواس وتقفز النقطتان `:` لأقصى اليمين | ✅ أقواس ونقطتان متماسكة 100% في موضعها |
+| **أزرار الملفات المضمنة (`.context-scope-mention`)** | ❌ تبعثر الكلمات العربية المجاورة لها | ✅ معزولة بـ `unicode-bidi: isolate` بتناسق تام |
+| **الأسطر بعد `<br>` التي تبدأ بكود إنجليزي** | ❌ تنقلب إلى `LTR` حتى مع `plaintext` | ✅ تبقى `RTL` بفضل الهوية الصريحة `dir="rtl"` |
+| **كتل الأكواد والمحرر (`.code-block`, `pre`)** | ✅ `LTR` | ✅ محمية بحجر صحي صارم `LTR` 100% |
+| **طريقة التثبيت والتراجع** | — | ⚡ أمر واحد فوري بدون إغلاق البرنامج + تراجع آمن 100% |
+
+---
+
+## ⭐ ادعم المشروع بإضافة نجمة (Star) / Support the Community
+
+تم تطوير هذا المشروع بهندسة دقيقة لخدمة مجتمع المطورين العرب ومستخدمي اللغات الشرقية حول العالم.
+**إذا أفادتك هذه الأداة وأراحتك من تشوه النصوص العربية في Antigravity و VS Code و Cursor:**
+
+1. ⭐ **اضغط على زر النجمة (Star) في أعلى مستودع GitHub الآن!** كل نجمة ترفع تصنيف المشروع وتساعد آلاف المطورين العرب في الوصول إليه.
+2. 📢 **شارك الأمر الواحد مع زملائك:** انسخ أمر التثبيت وشاركه في مجموعات البرمجة ومجتمعات الذكاء الاصطناعي.
+3. 🍴 **ساهم معنا (Fork & PR):** نرحب بتجربتك وملاحظاتك ومشاركتك في تطوير الأداة.
 
 <div align="center">
 
-[![Star on GitHub](https://img.shields.io/badge/⭐%20Star%20on%20GitHub-Click%20Here-gold?style=for-the-badge&logo=github)](https://github.com/sassil70/antigravity-rtl-ultra)
+### 👇 اضغط هنا لمنح المشروع نجمة ⭐ على GitHub 👇
+[![Star on GitHub](https://img.shields.io/badge/⭐%20Give%20a%20Star%20on%20GitHub-Click%20Here!-gold?style=for-the-badge&logo=github)](https://github.com/sassil70/antigravity-rtl-ultra)
 
-**معاً لجعل بيئات البرمجة والذكاء الاصطناعي تدعم لغتنا العربية بأعلى جودة تليق بنا 🚀**
+**معاً لبيئة برمجة وذكاء اصطناعي تدعم لغتنا العربية بأعلى معايير الدقة العالمية 🚀**
 
 </div>
 
 ---
 
-## 🏗️ سجل التغييرات والمعمارية / Documentation
+## 🏗️ الوثائق وسجل التغييرات / Documentation
 
-- للاطلاع على سجل التغييرات التفصيلي للنسخة 2.0.0: [CHANGELOG.md](CHANGELOG.md)
-- للاطلاع على التحليل الجنائي الشامل وحالات الاختبار المعيارية: [KNOWLEDGE_BASE.md](KNOWLEDGE_BASE.md)
-
----
-
-## 📄 الترخيص / License
-
-هذا المشروع منشور تحت ترخيص [MIT License](LICENSE).
+- سجل الإصدارات والتحديثات المعمارية: [CHANGELOG.md](CHANGELOG.md)
+- القاعدة المعرفية والتحليل الجنائي للـ BiDi: [KNOWLEDGE_BASE.md](KNOWLEDGE_BASE.md)
+- الرخصة القانونية: [MIT License](LICENSE) — **Eng. Saleem Asseel**

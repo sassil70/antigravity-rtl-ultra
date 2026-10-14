@@ -1,13 +1,33 @@
-﻿#!/usr/bin/env bash
+#!/usr/bin/env bash
 set -e
 
 echo "=========================================================="
-echo "   Antigravity RTL Ultra -- Safe Rollback (Unix)          "
+echo "   Antigravity RTL Ultra v2.1 -- Safe Rollback (Unix)     "
 echo "=========================================================="
+
+FOUND=0
+
+ASAR_TARGETS=(
+    "/Applications/Antigravity.app/Contents/Resources/app.asar"
+    "$HOME/Applications/Antigravity.app/Contents/Resources/app.asar"
+    "/opt/antigravity/resources/app.asar"
+    "/usr/share/antigravity/resources/app.asar"
+    "$HOME/.local/share/antigravity/resources/app.asar"
+)
+
+for ASAR in "${ASAR_TARGETS[@]}"; do
+    BACKUP="${ASAR}.rtlbak"
+    if [ -f "$BACKUP" ]; then
+        FOUND=1
+        echo "[+] Restoring Antigravity 2.x ASAR from backup: $BACKUP"
+        cp "$BACKUP" "$ASAR"
+        rm -f "$BACKUP"
+        echo "  [OK] Restored original app.asar."
+    fi
+done
 
 TARGETS=()
 
-# macOS Paths
 if [[ "$OSTYPE" == "darwin"* ]]; then
     TARGETS+=(
         "/Applications/Antigravity IDE.app/Contents/Resources/app/out/vs/workbench/workbench.desktop.main.css"
@@ -19,7 +39,6 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     )
 fi
 
-# Linux Paths
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
     TARGETS+=(
         "/opt/antigravity-ide/resources/app/out/vs/workbench/workbench.desktop.main.css"
@@ -30,8 +49,6 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
         "$HOME/.local/share/antigravity/resources/app/out/vs/workbench/workbench.desktop.main.css"
     )
 fi
-
-FOUND=0
 
 for TARGET in "${TARGETS[@]}"; do
     BACKUP="${TARGET}.rtlbak"
@@ -52,7 +69,7 @@ done
 
 if [ $FOUND -eq 1 ]; then
     echo "=========================================================="
-    echo " Rollback Complete! Please restart your IDE.             "
+    echo " ✅ Rollback Complete! Please restart Antigravity.        "
     echo "=========================================================="
 else
     echo "No target installations found."

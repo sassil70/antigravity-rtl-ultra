@@ -1,9 +1,16 @@
-﻿/* ==========================================================================
-   Antigravity RTL Ultra — Core Base & Isolation Rules
+/* ==========================================================================
+   Antigravity RTL Ultra — Core Base & Isolation Rules (v2.1)
    ========================================================================== */
 
-/* ── Universal BiDi Detection for Text Elements ───────────────────────── */
-p, li, h1, h2, h3, h4, h5, h6, td, th, dt, dd {
+/* ── Smart RTL Elements (Set by DOM BiDi Observer when Arabic is detected) ── */
+:is(p, li, h1, h2, h3, h4, h5, h6, blockquote, td, th, dt, dd, .markdown-alert)[dir="rtl"] {
+    direction: rtl !important;
+    unicode-bidi: normal !important;
+    text-align: right !important;
+}
+
+/* ── Fallback Universal BiDi Detection for Pure-CSS Environments ──────────── */
+:is(p, li, h1, h2, h3, h4, h5, h6, td, th, dt, dd):not([dir="rtl"]):not(.select-none):not(.sr-only) {
     unicode-bidi: plaintext !important;
     text-align: start !important;
 }
@@ -13,23 +20,38 @@ textarea, input[type="text"], [contenteditable="true"] {
     text-align: start !important;
 }
 
-/* ── Inline Code Tokens (Punctuation Isolation) ────────────────────────── */
-/* Prevents colons, brackets, and punctuation from jumping when mixed with Arabic */
-:not(pre) > code {
+/* ── Inline Code, File Pills & Links (Strict BiDi Punctuation Isolation) ──── */
+/* Prevents English tokens, paths, brackets, and colons from flipping Arabic  */
+:not(pre) > code,
+code.whitespace-pre-wrap,
+.context-scope-mention,
+.inline-pill,
+a.text-link[data-rtl-ltr-link="true"] {
     unicode-bidi: isolate !important;
     direction: ltr !important;
-    display: inline !important;
-    padding: 0.15em 0.35em !important;
-    margin: 0 0.15em !important;
-    border-radius: 4px !important;
-    font-family: var(--vscode-editor-font-family, Consolas, "Courier New", monospace) !important;
+    display: inline-block !important;
+    vertical-align: baseline !important;
+    max-width: 100% !important;
 }
 
-/* ── Code Blocks & Editor Strict LTR Quarantine ───────────────────────── */
+:not(pre) > code {
+    padding: 0.1em 0.35em !important;
+    margin: 0 0.12em !important;
+    border-radius: 4px !important;
+    font-family: var(--editor-font-family, var(--vscode-editor-font-family, Consolas, "Courier New", monospace)) !important;
+}
+
+/* ── Code Blocks, Jetbox Code Lines & Editor Strict LTR Quarantine ────────── */
 pre,
 pre code,
 pre *,
-code *,
+.code-block,
+.code-block *,
+.code-line,
+.code-line *,
+.line-content,
+.line-content *,
+.line-number,
 .monaco-editor,
 .monaco-editor *,
 .monaco-editor .view-line,
@@ -38,7 +60,9 @@ code *,
 .view-line,
 .code-snippet,
 .terminal,
-.terminal * {
+.terminal *,
+.xterm,
+.xterm * {
     direction: ltr !important;
     unicode-bidi: embed !important;
     text-align: left !important;

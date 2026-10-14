@@ -1,16 +1,23 @@
-﻿/* RTL-PATCH-START */
+/* RTL-PATCH-START */
 /* ==========================================================================
    Antigravity RTL Ultra — Universal Dual-Pane BiDi Engine
-   Version: 1.0.0
+   Version: 2.1.0 (Supports Antigravity 2.x Jetbox ASAR + Classic IDEs)
    Repository: https://github.com/sassil70/antigravity-rtl-ultra
    ========================================================================== */
 
 /* ==========================================================================
-   Antigravity RTL Ultra — Core Base & Isolation Rules
+   Antigravity RTL Ultra — Core Base & Isolation Rules (v2.1)
    ========================================================================== */
 
-/* ── Universal BiDi Detection for Text Elements ───────────────────────── */
-p, li, h1, h2, h3, h4, h5, h6, td, th, dt, dd {
+/* ── Smart RTL Elements (Set by DOM BiDi Observer when Arabic is detected) ── */
+:is(p, li, h1, h2, h3, h4, h5, h6, blockquote, td, th, dt, dd, .markdown-alert)[dir="rtl"] {
+    direction: rtl !important;
+    unicode-bidi: normal !important;
+    text-align: right !important;
+}
+
+/* ── Fallback Universal BiDi Detection for Pure-CSS Environments ──────────── */
+:is(p, li, h1, h2, h3, h4, h5, h6, td, th, dt, dd):not([dir="rtl"]):not(.select-none):not(.sr-only) {
     unicode-bidi: plaintext !important;
     text-align: start !important;
 }
@@ -20,23 +27,38 @@ textarea, input[type="text"], [contenteditable="true"] {
     text-align: start !important;
 }
 
-/* ── Inline Code Tokens (Punctuation Isolation) ────────────────────────── */
-/* Prevents colons, brackets, and punctuation from jumping when mixed with Arabic */
-:not(pre) > code {
+/* ── Inline Code, File Pills & Links (Strict BiDi Punctuation Isolation) ──── */
+/* Prevents English tokens, paths, brackets, and colons from flipping Arabic  */
+:not(pre) > code,
+code.whitespace-pre-wrap,
+.context-scope-mention,
+.inline-pill,
+a.text-link[data-rtl-ltr-link="true"] {
     unicode-bidi: isolate !important;
     direction: ltr !important;
-    display: inline !important;
-    padding: 0.15em 0.35em !important;
-    margin: 0 0.15em !important;
-    border-radius: 4px !important;
-    font-family: var(--vscode-editor-font-family, Consolas, "Courier New", monospace) !important;
+    display: inline-block !important;
+    vertical-align: baseline !important;
+    max-width: 100% !important;
 }
 
-/* ── Code Blocks & Editor Strict LTR Quarantine ───────────────────────── */
+:not(pre) > code {
+    padding: 0.1em 0.35em !important;
+    margin: 0 0.12em !important;
+    border-radius: 4px !important;
+    font-family: var(--editor-font-family, var(--vscode-editor-font-family, Consolas, "Courier New", monospace)) !important;
+}
+
+/* ── Code Blocks, Jetbox Code Lines & Editor Strict LTR Quarantine ────────── */
 pre,
 pre code,
 pre *,
-code *,
+.code-block,
+.code-block *,
+.code-line,
+.code-line *,
+.line-content,
+.line-content *,
+.line-number,
 .monaco-editor,
 .monaco-editor *,
 .monaco-editor .view-line,
@@ -45,7 +67,9 @@ code *,
 .view-line,
 .code-snippet,
 .terminal,
-.terminal * {
+.terminal *,
+.xterm,
+.xterm * {
     direction: ltr !important;
     unicode-bidi: embed !important;
     text-align: left !important;
@@ -53,10 +77,21 @@ code *,
 
 
 /* ==========================================================================
-   Antigravity RTL Ultra — AI Chat & Cascade Conversation Panel
+   Antigravity RTL Ultra — AI Chat & Cascade Conversation Panel (v2.1)
    ========================================================================== */
 
-/* ── Chat Container List Alignment (Preserving Native Counters & Bullets) ─ */
+/* ── Smart RTL Lists in Antigravity 2.x (Jetbox) & Workbench ──────────────── */
+:is(ul, ol)[dir="rtl"],
+.md-divider-spacing :is(ul, ol)[dir="rtl"] {
+    direction: rtl !important;
+    text-align: right !important;
+    padding-right: 1.5rem !important;
+    padding-left: 0 !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+/* ── Chat Container List Alignment (Preserving Native Counters & Bullets) ─── */
 .monaco-workbench .chat-widget ul,
 .monaco-workbench .chat-widget ol,
 .monaco-workbench .interactive-session ul,
@@ -81,31 +116,53 @@ code *,
     margin-inline-end: 0 !important;
 }
 
-/* ── List Items Direction & Spacing ───────────────────────────────────── */
-.monaco-workbench .chat-widget li,
-.monaco-workbench .interactive-session li,
-.monaco-workbench .chat-container li,
-.monaco-workbench .interactive-container li,
-.monaco-workbench .part.auxiliarybar li,
-.monaco-workbench .part.sidebar li,
-.monaco-workbench .part.panel li,
-[class*="cascade"] li,
-[class*="chat-"] li {
+/* ── List Items Direction & Spacing ───────────────────────────────────────── */
+.md-divider-spacing li[dir="rtl"],
+.monaco-workbench .chat-widget li[dir="rtl"],
+.monaco-workbench .interactive-session li[dir="rtl"] {
+    direction: rtl !important;
+    unicode-bidi: normal !important;
+    text-align: right !important;
+    margin-bottom: 0.35em !important;
+}
+
+.monaco-workbench .chat-widget li:not([dir="rtl"]),
+.monaco-workbench .interactive-session li:not([dir="rtl"]),
+.monaco-workbench .chat-container li:not([dir="rtl"]),
+.monaco-workbench .interactive-container li:not([dir="rtl"]),
+.monaco-workbench .part.auxiliarybar li:not([dir="rtl"]),
+.monaco-workbench .part.sidebar li:not([dir="rtl"]),
+.monaco-workbench .part.panel li:not([dir="rtl"]),
+[class*="cascade"] li:not([dir="rtl"]),
+[class*="chat-"] li:not([dir="rtl"]) {
     unicode-bidi: plaintext !important;
     text-align: start !important;
     margin-bottom: 0.35em !important;
 }
 
-/* ── Blockquotes in Chat ──────────────────────────────────────────────── */
-.monaco-workbench .chat-widget blockquote,
-.monaco-workbench .interactive-session blockquote,
-.monaco-workbench .chat-container blockquote,
-.monaco-workbench .interactive-container blockquote,
-.monaco-workbench .part.auxiliarybar blockquote,
-.monaco-workbench .part.sidebar blockquote,
-.monaco-workbench .part.panel blockquote,
-[class*="cascade"] blockquote,
-[class*="chat-"] blockquote {
+/* ── Blockquotes in Chat (Antigravity 2.x Jetbox & Classic Workbench) ─────── */
+blockquote[dir="rtl"],
+.md-divider-spacing blockquote[dir="rtl"] {
+    direction: rtl !important;
+    unicode-bidi: normal !important;
+    text-align: right !important;
+    border-left: none !important;
+    border-right: 4px solid var(--border, var(--vscode-textBlockQuote-border, rgba(255, 255, 255, 0.25))) !important;
+    padding-right: 1rem !important;
+    padding-left: 0.75rem !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+.monaco-workbench .chat-widget blockquote:not([dir="rtl"]),
+.monaco-workbench .interactive-session blockquote:not([dir="rtl"]),
+.monaco-workbench .chat-container blockquote:not([dir="rtl"]),
+.monaco-workbench .interactive-container blockquote:not([dir="rtl"]),
+.monaco-workbench .part.auxiliarybar blockquote:not([dir="rtl"]),
+.monaco-workbench .part.sidebar blockquote:not([dir="rtl"]),
+.monaco-workbench .part.panel blockquote:not([dir="rtl"]),
+[class*="cascade"] blockquote:not([dir="rtl"]),
+[class*="chat-"] blockquote:not([dir="rtl"]) {
     border-left: none !important;
     border-right: none !important;
     border-inline-start: 4px solid var(--vscode-textBlockQuote-border, rgba(255, 255, 255, 0.25)) !important;
@@ -117,37 +174,42 @@ code *,
     text-align: start !important;
 }
 
-/* ── Tables in Chat ───────────────────────────────────────────────────── */
+/* ── Tables in Chat ───────────────────────────────────────────────────────── */
+table[dir="rtl"],
+.md-divider-spacing table[dir="rtl"] {
+    direction: rtl !important;
+    border-collapse: collapse !important;
+}
+
 .monaco-workbench .chat-widget table,
 .monaco-workbench .interactive-session table,
 .monaco-workbench .chat-container table,
 .monaco-workbench .interactive-container table,
 [class*="cascade"] table,
 [class*="chat-"] table {
-    direction: inherit !important;
     border-collapse: collapse !important;
 }
 
-.monaco-workbench .chat-widget th,
-.monaco-workbench .chat-widget td,
-.monaco-workbench .interactive-session th,
-.monaco-workbench .interactive-session td,
-.monaco-workbench .chat-container th,
-.monaco-workbench .chat-container td,
-[class*="cascade"] th,
-[class*="cascade"] td,
-[class*="chat-"] th,
-[class*="chat-"] td {
+.monaco-workbench .chat-widget th:not([dir="rtl"]),
+.monaco-workbench .chat-widget td:not([dir="rtl"]),
+.monaco-workbench .interactive-session th:not([dir="rtl"]),
+.monaco-workbench .interactive-session td:not([dir="rtl"]),
+.monaco-workbench .chat-container th:not([dir="rtl"]),
+.monaco-workbench .chat-container td:not([dir="rtl"]),
+[class*="cascade"] th:not([dir="rtl"]),
+[class*="cascade"] td:not([dir="rtl"]),
+[class*="chat-"] th:not([dir="rtl"]),
+[class*="chat-"] td:not([dir="rtl"]) {
     text-align: start !important;
     unicode-bidi: plaintext !important;
 }
 
 
 /* ==========================================================================
-   Antigravity RTL Ultra — Artifacts, Documents & Report Viewer Panel
+   Antigravity RTL Ultra — Artifacts, Documents & Report Viewer Panel (v2.1)
    ========================================================================== */
 
-/* ── Artifact & Markdown Container Direction ──────────────────────────── */
+/* ── Artifact & Markdown Container Direction ──────────────────────────────── */
 .rendered-markdown,
 .markdown-body,
 .artifact-content,
@@ -158,33 +220,36 @@ code *,
     text-align: start !important;
 }
 
-/* ── Headings & Titles in Artifacts ───────────────────────────────────── */
-.rendered-markdown h1,
-.rendered-markdown h2,
-.rendered-markdown h3,
-.rendered-markdown h4,
-.rendered-markdown h5,
-.rendered-markdown h6,
-.artifact-content h1,
-.artifact-content h2,
-.artifact-content h3,
-.artifact-content h4,
-.artifact-content h5,
-.artifact-content h6,
-[class*="artifact"] h1,
-[class*="artifact"] h2,
-[class*="artifact"] h3,
-[class*="artifact"] h4,
-[class*="artifact"] h5,
-[class*="artifact"] h6 {
+/* ── Headings & Titles in Artifacts ───────────────────────────────────────── */
+:is(.rendered-markdown, .artifact-content, [class*="artifact"]) :is(h1, h2, h3, h4, h5, h6)[dir="rtl"] {
+    direction: rtl !important;
+    unicode-bidi: normal !important;
+    text-align: right !important;
+}
+
+:is(.rendered-markdown, .artifact-content, [class*="artifact"]) :is(h1, h2, h3, h4, h5, h6):not([dir="rtl"]) {
     unicode-bidi: plaintext !important;
     text-align: start !important;
 }
 
 /* ── Markdown Alert Callouts ([!NOTE], [!IMPORTANT], [!TIP], [!WARNING], [!CAUTION]) ─ */
-.markdown-alert,
-.rendered-markdown .markdown-alert,
-[class*="alert-"] {
+.markdown-alert[dir="rtl"],
+.rendered-markdown .markdown-alert[dir="rtl"],
+[class*="alert-"][dir="rtl"] {
+    direction: rtl !important;
+    unicode-bidi: normal !important;
+    text-align: right !important;
+    border-left: none !important;
+    border-right: 4px solid currentColor !important;
+    padding-right: 1em !important;
+    padding-left: 0.75em !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+.markdown-alert:not([dir="rtl"]),
+.rendered-markdown .markdown-alert:not([dir="rtl"]),
+[class*="alert-"]:not([dir="rtl"]) {
     border-left: none !important;
     border-right: none !important;
     border-inline-start: 4px solid currentColor !important;
@@ -196,7 +261,7 @@ code *,
     text-align: start !important;
 }
 
-/* ── Artifacts Lists & Indentation ────────────────────────────────────── */
+/* ── Artifacts Lists & Indentation ────────────────────────────────────────── */
 .rendered-markdown ul,
 .rendered-markdown ol,
 .artifact-content ul,
@@ -209,18 +274,18 @@ code *,
     margin-inline-end: 0 !important;
 }
 
-.rendered-markdown li,
-.artifact-content li,
-[class*="artifact"] li {
+.rendered-markdown li:not([dir="rtl"]),
+.artifact-content li:not([dir="rtl"]),
+[class*="artifact"] li:not([dir="rtl"]) {
     unicode-bidi: plaintext !important;
     text-align: start !important;
     margin-bottom: 0.35em !important;
 }
 
-/* ── Artifacts Blockquotes & Notes ────────────────────────────────────── */
-.rendered-markdown blockquote,
-.artifact-content blockquote,
-[class*="artifact"] blockquote {
+/* ── Artifacts Blockquotes & Notes ────────────────────────────────────────── */
+.rendered-markdown blockquote:not([dir="rtl"]),
+.artifact-content blockquote:not([dir="rtl"]),
+[class*="artifact"] blockquote:not([dir="rtl"]) {
     border-left: none !important;
     border-right: none !important;
     border-inline-start: 4px solid var(--vscode-textBlockQuote-border, rgba(255, 255, 255, 0.25)) !important;
@@ -232,25 +297,22 @@ code *,
     text-align: start !important;
 }
 
-/* ── Artifacts Tables ─────────────────────────────────────────────────── */
+/* ── Artifacts Tables ─────────────────────────────────────────────────────── */
 .rendered-markdown table,
 .artifact-content table,
 [class*="artifact"] table {
-    direction: inherit !important;
     border-collapse: collapse !important;
     width: 100% !important;
 }
 
-.rendered-markdown th,
-.rendered-markdown td,
-.artifact-content th,
-.artifact-content td,
-[class*="artifact"] th,
-[class*="artifact"] td {
+.rendered-markdown th:not([dir="rtl"]),
+.rendered-markdown td:not([dir="rtl"]),
+.artifact-content th:not([dir="rtl"]),
+.artifact-content td:not([dir="rtl"]),
+[class*="artifact"] th:not([dir="rtl"]),
+[class*="artifact"] td:not([dir="rtl"]) {
     text-align: start !important;
     unicode-bidi: plaintext !important;
     padding: 6px 12px !important;
 }
-
-
 /* RTL-PATCH-END */

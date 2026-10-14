@@ -1,8 +1,8 @@
-﻿/* ==========================================================================
-   Antigravity RTL Ultra — Artifacts, Documents & Report Viewer Panel
+/* ==========================================================================
+   Antigravity RTL Ultra — Artifacts, Documents & Report Viewer Panel (v2.1)
    ========================================================================== */
 
-/* ── Artifact & Markdown Container Direction ──────────────────────────── */
+/* ── Artifact & Markdown Container Direction ──────────────────────────────── */
 .rendered-markdown,
 .markdown-body,
 .artifact-content,
@@ -13,33 +13,36 @@
     text-align: start !important;
 }
 
-/* ── Headings & Titles in Artifacts ───────────────────────────────────── */
-.rendered-markdown h1,
-.rendered-markdown h2,
-.rendered-markdown h3,
-.rendered-markdown h4,
-.rendered-markdown h5,
-.rendered-markdown h6,
-.artifact-content h1,
-.artifact-content h2,
-.artifact-content h3,
-.artifact-content h4,
-.artifact-content h5,
-.artifact-content h6,
-[class*="artifact"] h1,
-[class*="artifact"] h2,
-[class*="artifact"] h3,
-[class*="artifact"] h4,
-[class*="artifact"] h5,
-[class*="artifact"] h6 {
+/* ── Headings & Titles in Artifacts ───────────────────────────────────────── */
+:is(.rendered-markdown, .artifact-content, [class*="artifact"]) :is(h1, h2, h3, h4, h5, h6)[dir="rtl"] {
+    direction: rtl !important;
+    unicode-bidi: normal !important;
+    text-align: right !important;
+}
+
+:is(.rendered-markdown, .artifact-content, [class*="artifact"]) :is(h1, h2, h3, h4, h5, h6):not([dir="rtl"]) {
     unicode-bidi: plaintext !important;
     text-align: start !important;
 }
 
 /* ── Markdown Alert Callouts ([!NOTE], [!IMPORTANT], [!TIP], [!WARNING], [!CAUTION]) ─ */
-.markdown-alert,
-.rendered-markdown .markdown-alert,
-[class*="alert-"] {
+.markdown-alert[dir="rtl"],
+.rendered-markdown .markdown-alert[dir="rtl"],
+[class*="alert-"][dir="rtl"] {
+    direction: rtl !important;
+    unicode-bidi: normal !important;
+    text-align: right !important;
+    border-left: none !important;
+    border-right: 4px solid currentColor !important;
+    padding-right: 1em !important;
+    padding-left: 0.75em !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+}
+
+.markdown-alert:not([dir="rtl"]),
+.rendered-markdown .markdown-alert:not([dir="rtl"]),
+[class*="alert-"]:not([dir="rtl"]) {
     border-left: none !important;
     border-right: none !important;
     border-inline-start: 4px solid currentColor !important;
@@ -51,7 +54,7 @@
     text-align: start !important;
 }
 
-/* ── Artifacts Lists & Indentation ────────────────────────────────────── */
+/* ── Artifacts Lists & Indentation ────────────────────────────────────────── */
 .rendered-markdown ul,
 .rendered-markdown ol,
 .artifact-content ul,
@@ -64,18 +67,18 @@
     margin-inline-end: 0 !important;
 }
 
-.rendered-markdown li,
-.artifact-content li,
-[class*="artifact"] li {
+.rendered-markdown li:not([dir="rtl"]),
+.artifact-content li:not([dir="rtl"]),
+[class*="artifact"] li:not([dir="rtl"]) {
     unicode-bidi: plaintext !important;
     text-align: start !important;
     margin-bottom: 0.35em !important;
 }
 
-/* ── Artifacts Blockquotes & Notes ────────────────────────────────────── */
-.rendered-markdown blockquote,
-.artifact-content blockquote,
-[class*="artifact"] blockquote {
+/* ── Artifacts Blockquotes & Notes ────────────────────────────────────────── */
+.rendered-markdown blockquote:not([dir="rtl"]),
+.artifact-content blockquote:not([dir="rtl"]),
+[class*="artifact"] blockquote:not([dir="rtl"]) {
     border-left: none !important;
     border-right: none !important;
     border-inline-start: 4px solid var(--vscode-textBlockQuote-border, rgba(255, 255, 255, 0.25)) !important;
@@ -87,21 +90,20 @@
     text-align: start !important;
 }
 
-/* ── Artifacts Tables ─────────────────────────────────────────────────── */
+/* ── Artifacts Tables ─────────────────────────────────────────────────────── */
 .rendered-markdown table,
 .artifact-content table,
 [class*="artifact"] table {
-    direction: inherit !important;
     border-collapse: collapse !important;
     width: 100% !important;
 }
 
-.rendered-markdown th,
-.rendered-markdown td,
-.artifact-content th,
-.artifact-content td,
-[class*="artifact"] th,
-[class*="artifact"] td {
+.rendered-markdown th:not([dir="rtl"]),
+.rendered-markdown td:not([dir="rtl"]),
+.artifact-content th:not([dir="rtl"]),
+.artifact-content td:not([dir="rtl"]),
+[class*="artifact"] th:not([dir="rtl"]),
+[class*="artifact"] td:not([dir="rtl"]) {
     text-align: start !important;
     unicode-bidi: plaintext !important;
     padding: 6px 12px !important;
